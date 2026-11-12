@@ -145,6 +145,19 @@ export default function App() {
     setAdminPassInput("");
   };
 
+  const categorySpending = useMemo(() => {
+    const totals = {};
+
+    expenses.forEach((e) => {
+      const category = e.category || "Other";
+
+      totals[category] =
+        (totals[category] || 0) + Number(e.amount);
+    });
+
+    return totals;
+  }, [expenses]);
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-950 dark:text-zinc-50">
       <div className="max-w-6xl mx-auto p-4 md:p-8">
@@ -177,8 +190,8 @@ export default function App() {
                 }
               }}
               className={`rounded-xl px-4 py-2 text-sm font-medium transition-colors h-[35px] md:hidden ${isAdmin
-                  ? "bg-purple-600 text-white hover:bg-purple-700"
-                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-700"
+                ? "bg-purple-600 text-white hover:bg-purple-700"
+                : "bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-700"
                 }`}
             >
               {isAdmin ? (showAdminPanel ? "Hide" : "Show") : "🔒"}
@@ -222,8 +235,8 @@ export default function App() {
                 }
               }}
               className={`rounded-xl px-4 py-2 text-sm font-medium transition-colors hidden md:block ${isAdmin
-                  ? "bg-purple-600 text-white hover:bg-purple-700"
-                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-700"
+                ? "bg-purple-600 text-white hover:bg-purple-700"
+                : "bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-700"
                 }`}
             >
               {isAdmin ? (showAdminPanel ? "Hide Admin" : "Show Admin") : "Admin Login"}
@@ -391,8 +404,8 @@ export default function App() {
                           </button>
                         </div>
                         <div className={`text-sm font-bold px-2.5 py-1 rounded-lg ${pos
-                            ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400"
-                            : "bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400"
+                          ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400"
+                          : "bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400"
                           }`}>
                           {pos ? "+" : ""}{round2(b).toFixed(2)}
                         </div>
@@ -424,6 +437,20 @@ export default function App() {
                   ))
                 )}
               </div>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {Object.entries(categorySpending).map(([category, amount]) => (
+                <div
+                  key={category}
+                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4"
+                >
+                  <p className="text-sm text-zinc-500">{category}</p>
+
+                  <h3 className="text-xl font-bold mt-2">
+                    {amount.toFixed(2)}
+                  </h3>
+                </div>
+              ))}
             </div>
           </aside>
         </main>
