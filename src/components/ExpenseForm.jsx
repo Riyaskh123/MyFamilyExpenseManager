@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-const CATEGORIES = ["Food", "Travel", "Groceries", "Medical", "Phone", "Other"];
+const CATEGORIES = ["Food", "Travel", "Groceries", "Medical", "Phone","Rent","Entertainment", "Other"];
 
 export default function ExpenseForm({ members, onSave, initialData }) {
   const [title, setTitle] = useState(initialData?.title || "");
