@@ -85,11 +85,20 @@ export default function App() {
 
   const memberName = (id) => members.find((m) => m.id === id)?.name || "Unknown";
 
-  const openViewModal = (member) => {
-    setSelectedMember(member);
-    setMemberExpenses(
-      filteredExpenses.filter((e) => e.paidByMemberId === member.id)
-    );
+  const openViewModal = (member, c = "Member") => {
+
+    if (c == "Category") {
+      setMemberExpenses(
+        filteredExpenses.filter((e) => e.category === member)
+      );
+      setSelectedMember(member);
+    }
+    else {
+      setSelectedMember(member);
+      setMemberExpenses(
+        filteredExpenses.filter((e) => e.paidByMemberId === member.id)
+      );
+    }
     setOpenView(true);
   };
 
@@ -443,6 +452,7 @@ export default function App() {
                 <div
                   key={category}
                   className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4"
+                  onClick={() => openViewModal(category,"Category")}
                 >
                   <p className="text-sm text-zinc-500">{category}</p>
 
@@ -474,7 +484,7 @@ export default function App() {
 
       <Modal
         open={openView}
-        title={`${selectedMember?.name}'s Spending - ${new Date(selectedMonth + "-02").toLocaleString("default", { month: "long" })}`}
+        title={`${selectedMember?.name ? selectedMember?.name : selectedMember }'s Spending - ${new Date(selectedMonth + "-02").toLocaleString("default", { month: "long" })}`}
         onClose={() => setOpenView(false)}
       >
         <ExpenseList expenses={memberExpenses} />
